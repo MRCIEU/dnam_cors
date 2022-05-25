@@ -216,9 +216,21 @@ dat <- dat %>% mutate(
 table(dat$aries_snp12same)
 ```
 
-Mostly looks like m1 and m2 have different mQTLs
+Mostly looks like m1 and m2 have different mQTLs. Is the top SNP for m1 and m2 selected in ARIES, or selected in GoDMC? Assuming that it's selected in GoDMC and then the same top SNPs are used in ARIES and BiB.
 
-Is the top SNP for m1 and m2 selected in ARIES, or selected in GoDMC? Assuming that it's selected in GoDMC and then the same top SNPs are used in ARIES and BiB.
+Is the adjusted_cor diff related to the original_cor diff?
+
+```{r}
+dat %>%
+  ggplot(., aes((aries_correlation - bib_correlation), (aries_snp_adjusted_correlation - bib_snp_adjusted_correlation))) +
+  geom_point()
+```
+
+```{r}
+summary(lm(I(aries_correlation - bib_correlation) ~ I(aries_snp_adjusted_correlation - bib_snp_adjusted_correlation), dat))
+```
+
+Ok so if the unadjusted correlation difference is large, then the adjusted correlation difference is large also. 
 
 Quick look at what residuals should look like after adjusting for a SNP
 
